@@ -1,5 +1,5 @@
-3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
+<H3>SHRI SAI ARAVIND. R</H3>
+<H3>212223040197</H3>
 <H3>EX. NO.6</H3>
 <H3>DATE:</H3>
 <H1 ALIGN =CENTER>Heart attack prediction using MLP</H1>
@@ -17,11 +17,81 @@ Step 9:Evaluate the model's accuracy by comparing the predicted labels (y_pred) 
 Step 10:Print the accuracy of the model.<BR>
 Step 11:Plot the error convergence during training using plt.plot() and plt.show().<BR>
 <H3>Program: </H3>
-Insert your code here
 
+```py
+import numpy as np
+import pandas as pd
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+
+# Load the dataset (assuming it's stored in a file)
+df= pd.read_csv('heart.csv')
+df.head()
+
+# Separate features and labels
+X = df.drop("target", axis=1)
+y = df["target"]
+
+X
+y
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Normalize the feature data
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Create and train the MLP model
+classifier = MLPClassifier(hidden_layer_sizes=(20,20,20), max_iter=1000).fit(X_train,y_train)
+# Make predictions on the testing set
+predictions = classifier.predict(X_test)
+
+res_df = pd.DataFrame({"Predicted": predictions, "Actual Labels": y_test})
+res_df
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, predictions)
+print(f"Accuracy: {accuracy*100:.2f}%")
+# Plot the error convergence
+training_loss = classifier.fit(X_train,y_train).loss_curve_
+
+plt.plot(training_loss)
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.show()
+
+from sklearn.metrics import confusion_matrix, classification_report
+
+print(confusion_matrix(y_test, predictions))
+
+print(classification_report(y_test, predictions))
+```
 <H3>Output:</H3>
 
-Show your results here
+## Features
+![alt text](image.png)
+
+## Target
+![alt text](image-1.png)
+
+## Predicted vs actual labels
+![alt text](image-2.png)
+
+## Accuracy
+![alt text](image-3.png)
+
+## Error convergence curve
+![alt text](image-4.png)
+
+## Confusion Matrix
+![alt text](image-5.png)
+
+## Classification Report
+![alt text](image-6.png)
 
 <H3>Results:</H3>
 Thus, an ANN with MLP is constructed and trained to predict the heart attack using python.
